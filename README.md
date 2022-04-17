@@ -1,4 +1,4 @@
-# Caesar Cipher Encoder/Decoder
+# Caesar Cipher encrypter/decrypter/codebreaker
 
 A terminal encoder/decoder/codebreaker for the Caesar cipher:
 
