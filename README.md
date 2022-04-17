@@ -1,15 +1,17 @@
 # Caesar Cipher Encoder/Decoder
 
-A terminal encoder/decoder for the Caesar cipher:
+A terminal encoder/decoder/codebreaker for the Caesar cipher:
 
-![caesar_cipher_GIF](https://user-images.githubusercontent.com/84557025/163131347-e67ff5fd-da06-4f45-bd59-973ebd92366d.gif)
+![caesar_cipher](https://user-images.githubusercontent.com/84557025/163703460-c2997b5f-9dcb-4dc3-b887-7c113ef7023f.gif)
+
+Read more about the Caesar cipher [here](http://practicalcryptography.com/ciphers/caesar-cipher/).
 
 ## The cipher alphabet
 
-For the cipher alphabet I've used the printable character set from Python's [string module](https://pymotw.com/3/string/index.html).
+For the cipher alphabet I've used a concanted list of the **ascii_letters**, **digits** and **punctuation** constants and from Python's [string module](https://pymotw.com/3/string/index.html).
 
 ```python 
-printable='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
+ALPHABET_LIST='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 ```
 
 ## Warning
@@ -17,6 +19,4 @@ printable='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\
 Don't use this to secure... [anything](https://cryptogramcenter.com/caesar-cipher-not-secure/).
 
 ## Acknowledgement 
-I've used the brilliant [Colorama](https://github.com/tartley/colorama) for coloured terminal text on MS Windows.
-
-Read more about the Caesar cipher [here](http://practicalcryptography.com/ciphers/caesar-cipher/).
+I've used the brilliant [Colorama](https://github.com/tartley/colorama) for coloured terminal text.
