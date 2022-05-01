@@ -77,7 +77,7 @@ def break_cipher(cipher_text, max_key_length=ALPHABET_LIST_LENGTH):
 
 while True:
     request_type = input("Do you want to encrypt, decrypt or break? ")
-    if request_type in ("decrypt","d"):
+    if request_type in ("decrypt", "d"):
         try:
             encryption_key_input = int(input("Enter encryption key: "))
         except ValueError:
@@ -95,7 +95,7 @@ while True:
         text_to_encrypt_input = input("Enter text to encrypt: ")
         encrypted_text = encrypt(key_input, text_to_encrypt_input)
         print(f"Encrypted text: {Fore.RED + encrypted_text}")
-    elif request_type in ("break","b"):
+    elif request_type in ("break", "b"):
         cipher_text_to_break = input("What's the cipher text? ")
         break_cipher(cipher_text_to_break)
     elif request_type == "exit":
