@@ -8,10 +8,10 @@ Read more about the Caesar cipher [here](http://practicalcryptography.com/cipher
 
 ## The cipher alphabet
 
-For the cipher alphabet I've used a concanted list of the **ascii_letters**, **digits** and **punctuation** constants and from Python's [string module](https://pymotw.com/3/string/index.html).
+For the cipher alphabet I've used the **ascii_lowercase** constant and from Python's [string module](https://pymotw.com/3/string/index.html).
 
 ```python 
-ALPHABET_LIST='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+ALPHABET='abcdefghijklmnopqrstuvwxyz'
 ```
 
 ## Warning
