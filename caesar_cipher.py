@@ -3,37 +3,37 @@ import string
 from colorama import init, Fore, Style
 
 init(autoreset=True)
-ALPHABET_LIST = list(string.ascii_lowercase)
-ALPHABET_LIST += string.digits
-ALPHABET_LIST += string.punctuation
-ALPHABET_LIST_LENGTH = len(ALPHABET_LIST)
-ALPHABET_LIST_LENGTH_NEGATIVE = ALPHABET_LIST_LENGTH - (ALPHABET_LIST_LENGTH
+ALPHABET = string.ascii_lowercase
+ALPHABET_LENGTH = len(ALPHABET)
+ALPHABET_LENGTH_NEGATIVE = ALPHABET_LENGTH - (ALPHABET_LENGTH
                                                         * 2)
 
 def encrypt(encryption_key, plain_text):
     """Encrypt cipher text."""
     encrypted_message = ""
     for letter in plain_text:
-        if letter not in ALPHABET_LIST:
+        if letter not in ALPHABET:
             encrypted_message += letter
-        elif letter in ALPHABET_LIST:
-            plain_letter_index = ALPHABET_LIST.index(letter)
+        elif letter in ALPHABET:
+            plain_letter_index = ALPHABET.index(letter)
             encrypted_letter_index = plain_letter_index + encryption_key
             try:
-                encrypted_message += ALPHABET_LIST[encrypted_letter_index]
+                encrypted_message += ALPHABET[encrypted_letter_index]
             except IndexError:
                 # How many characters left before end of alphabet.
-                index_difference = ALPHABET_LIST_LENGTH - plain_letter_index
+                index_difference = ALPHABET_LENGTH - plain_letter_index
                 # Check to see if encryption key extends beyond end of alphabet.
                 index_check = index_difference - encryption_key
                 # If index check is less than 0 then there are no more chars left
                 # in current alphabet.
-                while ALPHABET_LIST_LENGTH > index_check < 0:
+                while ALPHABET_LENGTH <= index_check or index_check < 0:
                     if index_check < 0:
                         index_check = (index_check*-1)
-                    if index_check > ALPHABET_LIST_LENGTH:
-                        index_check = index_check - ALPHABET_LIST_LENGTH
-                encrypted_message += ALPHABET_LIST[index_check]
+                    if index_check > ALPHABET_LENGTH:
+                        index_check = index_check - ALPHABET_LENGTH
+                    if index_check == ALPHABET_LENGTH:
+                        index_check = 0
+                encrypted_message += ALPHABET[index_check]
     return encrypted_message
 
 
@@ -43,32 +43,32 @@ def decrypt(encryption_key, cipher_text):
     for letter in cipher_text:
         if letter == " ":
             decrypted_message += letter
-        elif letter in ALPHABET_LIST:
-            plain_letter_index = ALPHABET_LIST.index(letter)
+        elif letter in ALPHABET:
+            plain_letter_index = ALPHABET.index(letter)
             decrypted_letter_index = plain_letter_index - encryption_key
             # Check to make sure encryption key hasn't resulted in a negative
             # integer index (which will provide the incorrect plaintext).
             if decrypted_letter_index >= 0:
-                decrypted_message += ALPHABET_LIST[decrypted_letter_index]
+                decrypted_message += ALPHABET[decrypted_letter_index]
             # If index integer is less than 0.
             else:
                 # Handles the negative integer problem - by adding the alphabet
                 # list length, we get the correct index position/integer.
                 try:
-                    decrypted_letter_index += ALPHABET_LIST_LENGTH
-                    decrypted_message += ALPHABET_LIST[decrypted_letter_index]
+                    decrypted_letter_index += ALPHABET_LENGTH
+                    decrypted_message += ALPHABET[decrypted_letter_index]
                 # Handles a negative integer problem that can't be handled by
                 # the above try block.
                 except IndexError:
-                    while decrypted_letter_index < ALPHABET_LIST_LENGTH_NEGATIVE:
-                        decrypted_letter_index = decrypted_letter_index + ALPHABET_LIST_LENGTH
-                    decrypted_message += ALPHABET_LIST[decrypted_letter_index]
+                    while decrypted_letter_index < ALPHABET_LENGTH_NEGATIVE:
+                        decrypted_letter_index = decrypted_letter_index + ALPHABET_LENGTH
+                    decrypted_message += ALPHABET[decrypted_letter_index]
         else:
             decrypted_message += letter
     return decrypted_message
 
 
-def break_cipher(cipher_text, max_key_length=ALPHABET_LIST_LENGTH):
+def break_cipher(cipher_text, max_key_length=ALPHABET_LENGTH):
     """ Print all possible plaintext for the provided ciphertext."""
     for possible_key in range(0, max_key_length):
         possible_text = decrypt(possible_key, cipher_text)
