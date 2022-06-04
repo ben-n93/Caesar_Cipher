@@ -3,77 +3,65 @@ import string
 from colorama import init, Fore, Style
 
 init(autoreset=True)
+
 ALPHABET = string.ascii_lowercase
 ALPHABET_LENGTH = len(ALPHABET)
-ALPHABET_LENGTH_NEGATIVE = ALPHABET_LENGTH - (ALPHABET_LENGTH
-                                                        * 2)
+ALPHABET_LENGTH_NEGATIVE = ALPHABET_LENGTH * -1
 
-def encrypt(encryption_key, plain_text):
+def encrypt(plaintext, encryption_key):
     """Encrypt cipher text."""
-    encrypted_message = ""
-    for letter in plain_text:
+    encrypted_letters = []
+    for letter in plaintext:
         if letter not in ALPHABET:
-            encrypted_message += letter
+            encrypted_letters.append(letter)
         elif letter in ALPHABET:
             plain_letter_index = ALPHABET.index(letter)
             encrypted_letter_index = plain_letter_index + encryption_key
             try:
-                encrypted_message += ALPHABET[encrypted_letter_index]
+                encrypted_letters.append(ALPHABET[encrypted_letter_index])
             except IndexError:
-                # How many characters left before end of alphabet.
                 index_difference = ALPHABET_LENGTH - plain_letter_index
-                # Check to see if encryption key extends beyond end of alphabet.
                 index_check = index_difference - encryption_key
-                # If index check is less than 0 then there are no more chars left
-                # in current alphabet.
                 while ALPHABET_LENGTH <= index_check or index_check < 0:
                     if index_check < 0:
                         index_check = (index_check*-1)
-                    if index_check > ALPHABET_LENGTH:
+                    if index_check >= ALPHABET_LENGTH:
                         index_check = index_check - ALPHABET_LENGTH
                     if index_check == ALPHABET_LENGTH:
                         index_check = 0
-                encrypted_message += ALPHABET[index_check]
+                encrypted_letters.append(ALPHABET[index_check])
+    encrypted_message = ''.join(encrypted_letters)
     return encrypted_message
 
-
-def decrypt(encryption_key, cipher_text):
-    """Decrypting ciphertext."""
-    decrypted_message = ""
-    for letter in cipher_text:
-        if letter == " ":
-            decrypted_message += letter
+  
+def decrypt(ciphertext, encryption_key):
+    """Decrypt ciphertext."""
+    decrypted_letters = []
+    for letter in ciphertext:
+        if letter not in ALPHABET:
+            decrypted_letters.append(letter)
         elif letter in ALPHABET:
             plain_letter_index = ALPHABET.index(letter)
             decrypted_letter_index = plain_letter_index - encryption_key
-            # Check to make sure encryption key hasn't resulted in a negative
-            # integer index (which will provide the incorrect plaintext).
             if decrypted_letter_index >= 0:
-                decrypted_message += ALPHABET[decrypted_letter_index]
-            # If index integer is less than 0.
+                decrypted_letters.append(ALPHABET[decrypted_letter_index])
             else:
-                # Handles the negative integer problem - by adding the alphabet
-                # list length, we get the correct index position/integer.
                 try:
                     decrypted_letter_index += ALPHABET_LENGTH
-                    decrypted_message += ALPHABET[decrypted_letter_index]
-                # Handles a negative integer problem that can't be handled by
-                # the above try block.
+                    decrypted_letters.append(ALPHABET[decrypted_letter_index])
                 except IndexError:
-                    while decrypted_letter_index < ALPHABET_LENGTH_NEGATIVE:
-                        decrypted_letter_index = decrypted_letter_index + ALPHABET_LENGTH
-                    decrypted_message += ALPHABET[decrypted_letter_index]
-        else:
-            decrypted_message += letter
+                        while decrypted_letter_index <= ALPHABET_LENGTH_NEGATIVE:
+                            decrypted_letter_index = decrypted_letter_index + ALPHABET_LENGTH
+                        decrypted_letters.append(ALPHABET[decrypted_letter_index])
+    decrypted_message = ''.join(decrypted_letters)
     return decrypted_message
 
 
-def break_cipher(cipher_text, max_key_length=ALPHABET_LENGTH):
-    """ Print all possible plaintext for the provided ciphertext."""
-    for possible_key in range(0, max_key_length):
-        possible_text = decrypt(possible_key, cipher_text)
-        print(f"Encryption key: {possible_key} - Plain text: {Fore.GREEN + possible_text}")
-
+def brute_force(ciphertext, possible_keys=ALPHABET_LENGTH):
+  """Print possible plaintext for the provided ciphertext."""
+  for possible_key in range(1, possible_keys):
+    possible_text = decrypt(ciphertext, possible_key)
+    print(f"Encryption key: {possible_key} - Plain text: {Fore.GREEN + possible_text}")
 
 while True:
     request_type = input("Do you want to encrypt, decrypt or break? ")
@@ -84,7 +72,7 @@ while True:
             print("Please only enter a number.")
             continue
         text_to_decrypt_input = input("Enter text to decipher: ")
-        decrypted_text = decrypt(encryption_key_input, text_to_decrypt_input)
+        decrypted_text = decrypt(text_to_decrypt_input, encryption_key_input)
         print(f"Decrypted messaged: {Fore.GREEN + decrypted_text}")
     elif request_type in ("encrypt", "e"):
         try:
@@ -93,11 +81,11 @@ while True:
             print("Please only enter a number.")
             continue
         text_to_encrypt_input = input("Enter text to encrypt: ")
-        encrypted_text = encrypt(key_input, text_to_encrypt_input)
+        encrypted_text = encrypt(text_to_encrypt_input, key_input)
         print(f"Encrypted text: {Fore.RED + encrypted_text}")
     elif request_type in ("break", "b"):
         cipher_text_to_break = input("What's the cipher text? ")
-        break_cipher(cipher_text_to_break)
+        brute_force(cipher_text_to_break)
     elif request_type == "exit":
         break
     else:
