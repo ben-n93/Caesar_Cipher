@@ -6,7 +6,7 @@ init(autoreset=True)
 
 ALPHABET = string.ascii_lowercase
 ALPHABET_LENGTH = len(ALPHABET)
-ALPHABET_LENGTH_NEGATIVE = ALPHABET_LENGTH * -1
+ALPHABET_LENGTH_NEGATIVE = - ALPHABET_LENGTH
 
 
 def encrypt(plaintext, encryption_key):
